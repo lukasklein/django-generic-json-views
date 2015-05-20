@@ -21,7 +21,6 @@ from django.views.generic import View
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 from django.views.generic.edit import BaseFormView
-from django.utils.encoding import force_unicode
 from django.db.models.base import ModelBase
 from django.db.models import ManyToManyField
 from django.http import HttpResponseNotAllowed, HttpResponse
@@ -31,6 +30,11 @@ try:
     import json
 except ImportError:
     from django.utils import simplejson as json
+
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    from django.utils.encoding import force_text as force_unicode
 
 ##########################################################################
 ## JSON serialization helpers
