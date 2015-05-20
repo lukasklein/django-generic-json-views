@@ -21,6 +21,7 @@ from django.views.generic import View
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 from django.views.generic.edit import BaseFormView
+from django.utils.encoding import force_text
 from django.db.models.base import ModelBase
 from django.db.models import ManyToManyField
 from django.http import HttpResponseNotAllowed, HttpResponse
@@ -31,10 +32,6 @@ try:
 except ImportError:
     from django.utils import simplejson as json
 
-try:
-    from django.utils.encoding import force_unicode
-except ImportError:
-    from django.utils.encoding import force_text as force_unicode
 
 ##########################################################################
 ## JSON serialization helpers
@@ -49,7 +46,6 @@ def dumps(content, **json_opts):
     opts = {
         'ensure_ascii': False,
         'cls': LazyJSONEncoder,
-        'encoding': 'utf-8',
     }
 
     opts.update(json_opts)
@@ -81,7 +77,7 @@ class LazyJSONEncoder(json.JSONEncoder):
 
         # Other Python Types:
         try:
-            return force_unicode(obj)
+            return force_text(obj)
         except Exception:
             pass
 
